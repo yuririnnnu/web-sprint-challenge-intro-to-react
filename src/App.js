@@ -4,6 +4,8 @@ import axios from 'axios';
 import Character from './components/Character';
 import Detail from './components/Detail';
 
+
+
 const App = () => {
   // Try to think through what state you'll need for this app before starting. Then build out
   // the state properties here.
@@ -14,31 +16,33 @@ const App = () => {
   // sync up with, if any.
   const openDetail = (id) => {
     setCurChar(id)
+    console.log("This is curChar: ", curChar)
   }
   const closeDetail = () => {
     setCurChar(null);
   }
-
   useEffect(() => {
     axios.get(`https://swapi.dev/api/people`)
     .then(res => {
-      console.log(res.data);
+      console.log("This is res.data: ", res.data);
       setChars(res.data);
+      // console.log("This is the variable chars: ", chars);
     })
     .catch(err => {
       console.error(err);
     })
   },[])
+  
   return (
-    <div className="App">
+    <div className="App detail">
       <h1 className="Header">Characters</h1>
       {
         chars.map((char) => {
-          return <Character key={char.id} info={char} action={openDetail} />
+          return <Character key={char.url} info={char} action={openDetail} />
         })
       }
       {
-        curChar && <Detail char={curChar} close={closeDetail}/>
+        curChar && <Detail chars={curChar} close={closeDetail} />        
       }
     </div>
   );
